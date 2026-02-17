@@ -3,8 +3,9 @@ import UIKit
 import SnapKit
 
 
-protocol IMVPWeatherView {
-    
+protocol IMVPWeatherView: AnyObject {
+    func configureUI()
+    func showCityList()
 }
 
 final class MVPWeatherController: UIViewController, IMVPWeatherView {
@@ -29,11 +30,11 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
     
     private let burgerButton: UIButton = {
         let button = UIButton(type: .system)
-        let burgerImage = UIImage(systemName: "line.3.horizontal")
-            button.setImage(burgerImage, for: .normal)
-        button.tintColor = .white
-        return button
-    }()
+            button.setTitle("☰", for: .normal)
+            button.setTitleColor(.black, for: .normal)
+            button.titleLabel?.font = .systemFont(ofSize: 32)
+            return button
+        }()
     
     
     
@@ -60,42 +61,47 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
         
         view.addSubview(burgerButton)
         burgerButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(Constants.Offsets.topOffsetBurger)
-            make.left.equalToSuperview().offset(Constants.Offsets.baseOffset)
-            make.height.width.equalTo(Constants.SizeButton.sizeBurgerButton)
+            make.top.equalToSuperview().offset(68)
+            make.left.equalToSuperview().offset(16)
+            make.height.width.equalTo(60)
+
         }
-        
         
         view.addSubview(cityLabel)
         cityLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(Constants.Offsets.topOffsetTemperature)
-            make.height.equalTo(40)
-            make.width.equalTo(160)
+            make.top.equalToSuperview().offset(160)
+            make.height.equalTo(50)
+            make.width.equalTo(200)
         }
         
         
         view.addSubview(temperatureLabel)
         temperatureLabel.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
-            make.width.height.equalTo(120)
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(100)
         }
         
         
         view.addSubview(windowLabel)
         windowLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(120)
-            make.height.equalTo(40)
-            make.width.equalTo(160)
+            make.bottom.equalToSuperview().inset(200)
+            make.height.equalTo(50)
+            make.width.equalTo(200)
         }
         
         let burgerAction = UIAction { _ in
             self.presenter.burgerButtonTapped()
         }
-    
-        burgerButton.addAction(burgerAction, for: .touchUpInside)
         
+        burgerButton.addAction(burgerAction, for: .touchUpInside)
+    }
+    
+    func showCityList() {
+        let cityListVC = MVPCityListAssembly().assembly()
+        navigationController?.pushViewController(cityListVC, animated: true)
     }
     
 }

@@ -8,11 +8,11 @@ protocol IMVPWeatherPresenter {
 
 final class MVPWeatherPresenter: IMVPWeatherPresenter {
     
-    var view: IMVPWeatherView?
+   var view: IMVPWeatherView?
     
     
     func burgerButtonTapped() {
-        print("Нажал на бургер")
+        view?.showCityList()
     }
     
 }

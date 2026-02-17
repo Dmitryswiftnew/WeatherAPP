@@ -1,8 +1,16 @@
-//
-//  MVPCityListPresenter.swift
-//  WeatherAPP
-//
-//  Created by Dmitry on 16.02.26.
-//
-
 import Foundation
+
+protocol IMVPCityListPresenter {
+    
+}
+
+
+final class MVPCityListPresenter: IMVPCityListPresenter {
+    
+    weak var view: IMVPCityListView?
+    private let model: MVPWeatherModel
+    
+    init(model: MVPWeatherModel) {
+        self.model = model
+    }
+}

@@ -18,8 +18,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         let controller = MVPWeatherAssembly().assembly()
+        let navController = UINavigationController(rootViewController: controller)
         
-        window?.rootViewController = controller
+        window?.rootViewController = navController
         window?.makeKeyAndVisible()
         
     }
