@@ -52,7 +52,9 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.isNavigationBarHidden = true
         configureUI()
+//        presenter.testNetwork() // проверка запросов с сервака
     }
     
 
@@ -61,7 +63,7 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
         
         view.addSubview(burgerButton)
         burgerButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(68)
+            make.top.equalToSuperview().offset(50)
             make.left.equalToSuperview().offset(16)
             make.height.width.equalTo(60)
 
