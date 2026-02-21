@@ -53,7 +53,7 @@ final class MVPCityListController: UIViewController, IMVPCityListView {
         
         view.addSubview(backButton)
         backButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(74)
+            make.top.equalToSuperview().offset(50)
             make.left.equalToSuperview().offset(16)
             make.height.width.equalTo(44)
         }
