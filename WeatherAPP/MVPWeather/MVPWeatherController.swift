@@ -55,6 +55,7 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
         navigationController?.isNavigationBarHidden = true
         configureUI()
 //        presenter.testNetwork() // проверка запросов с сервака
+//        presenter.testCurrentLocation() // проверкк координат 
     }
     
 

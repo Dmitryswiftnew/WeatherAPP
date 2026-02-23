@@ -4,8 +4,9 @@ import UIKit
 
 final class MVPCityListAssembly {
     func assembly() -> UIViewController {
-        let model = MVPWeatherModel()
-        let presenter = MVPCityListPresenter(model: model)
+        let locationService = LocationService()
+        let networkService = NetworkSevice()
+        let presenter = MVPCityListPresenter(locationService: locationService, networkService: networkService)
         let controller = MVPCityListController(presenter: presenter)
         
         

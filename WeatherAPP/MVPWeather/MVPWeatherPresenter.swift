@@ -5,23 +5,46 @@ import UIKit
 protocol IMVPWeatherPresenter {
     func burgerButtonTapped()
     func testNetwork()
+    func testCurrentLocation()
 }
 
 final class MVPWeatherPresenter: IMVPWeatherPresenter {
+    weak var view: IMVPWeatherView?
+    private let locationService: ILocationService
+    private let networkService: INetworkService
     
-   var view: IMVPWeatherView?
+    init(locationService: ILocationService, networkService: INetworkService) {
+        self.locationService = locationService
+        self.networkService = networkService
+        
+    }
     
-    func testNetwork() {
+    
+    func testNetwork() {                                       // тестирование
         let network = NetworkSevice()
         
-        network.getWeatherByCity("Москва") { data in
-            print("Москва: \(data?.count ?? 0) байт")
+        network.getWeatherByCity("Вашингтон") { model in
+            if let model = model {
+                print(" \(model.nameCity): \(model.temp)°")
+                print("   \(model.description), ветер \(model.windSpeed)м/с")
+            } else {
+                print(" Ошибка получения погоды")
+            }
         }
         
-        network.getWeatherByCoordinates(lat: 53.90, lon: 27.56) { data in
-            print("Минск coords: \(data?.count ?? 0) байт")
-        }
     }
+    
+    func testCurrentLocation() {
+        let testLat: Double = 37.566
+        let testLon: Double = 126.978
+      networkService.getWeatherByCoordinates(lat: testLat, lon: testLon) { model in
+                if let model = model {
+                    print("\(model.nameCity): \(model.temp)°")
+                } else {
+                    print(" Ошибка получения координат")
+                }
+            }
+        }
     
 
     

@@ -24,6 +24,7 @@
 		0AA43A9C2F43819A009F7E9F /* MVPCityListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA43A9B2F43819A009F7E9F /* MVPCityListPresenter.swift */; };
 		0AA43A9F2F43849B009F7E9F /* CityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA43A9E2F43849B009F7E9F /* CityTableViewCell.swift */; };
 		0AA43AA22F48BC1A009F7E9F /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 0AA43AA12F48BC1A009F7E9F /* SwiftyJSON */; };
+		0AA43AA42F4B56C9009F7E9F /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA43AA32F4B56C9009F7E9F /* LocationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		0AA43A992F438180009F7E9F /* MVPCityListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVPCityListController.swift; sourceTree = "<group>"; };
 		0AA43A9B2F43819A009F7E9F /* MVPCityListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVPCityListPresenter.swift; sourceTree = "<group>"; };
 		0AA43A9E2F43849B009F7E9F /* CityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityTableViewCell.swift; sourceTree = "<group>"; };
+		0AA43AA32F4B56C9009F7E9F /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				0AA43A942F436B58009F7E9F /* NetworkSevice.swift */,
+				0AA43AA32F4B56C9009F7E9F /* LocationService.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				0AA43A952F436B58009F7E9F /* NetworkSevice.swift in Sources */,
 				0AA43A6F2F431893009F7E9F /* AppDelegate.swift in Sources */,
 				0AA43A842F431A7C009F7E9F /* MVPWeatherAssembly.swift in Sources */,
+				0AA43AA42F4B56C9009F7E9F /* LocationService.swift in Sources */,
 				0AA43A862F431BD4009F7E9F /* MVPWeatherPresenter.swift in Sources */,
 				0AA43A712F431893009F7E9F /* SceneDelegate.swift in Sources */,
 				0AA43A9F2F43849B009F7E9F /* CityTableViewCell.swift in Sources */,

@@ -6,8 +6,9 @@ import UIKit
 
 final class MVPWeatherAssembly {
     func assembly() -> UIViewController {
-        _ = MVPWeatherModel()
-        let presenter = MVPWeatherPresenter()
+        let locationService = LocationService()
+        let networkService = NetworkSevice()
+        let presenter = MVPWeatherPresenter(locationService: locationService, networkService: networkService)
         let controller = MVPWeatherController(presenter: presenter)
         
         presenter.view = controller

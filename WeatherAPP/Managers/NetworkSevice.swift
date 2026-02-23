@@ -3,8 +3,8 @@ import SwiftyJSON
 
 
 protocol INetworkService {
-    func getWeatherByCity(_ cityName: String, completion: @escaping (Data?) -> Void)
-    func getWeatherByCoordinates(lat: Double, lon: Double, completion: @escaping (Data?) -> Void)
+    func getWeatherByCity(_ cityName: String, completion: @escaping (MVPWeatherModel?) -> Void)
+    func getWeatherByCoordinates(lat: Double, lon: Double, completion: @escaping (MVPWeatherModel?) -> Void)
 }
 
 
@@ -16,18 +16,63 @@ enum RequestType: String {
 
 final class NetworkSevice: INetworkService {
     
+    
+    
     private let baseURLString = "https://api.openweathermap.org/data/2.5/weather"
     private let apiKey = "464a3a6e5b45305ac50bac982fbd017a"
     
     
-    func getWeatherByCity(_ cityName: String, completion: @escaping (Data?) -> Void) {
-      let params = "?q=\(cityName)&lang=ru&appid=\(apiKey)&units=metric"
-        sendRequest(type: .GET, params: params, completion: completion)
+    func getWeatherByCity(_ cityName: String, completion: @escaping (MVPWeatherModel?) -> Void) {
+        let params = "?q=\(cityName)&lang=ru&appid=\(apiKey)&units=metric"
+        sendRequest(type: .GET, params: params) { data in
+            guard let data = data,
+                  let json = try? JSON(data: data),
+                  json["cod"].intValue == 200 else {
+                completion(nil)
+                return
+            }
+            
+            let weatherArray = json["weather"].arrayValue
+            let firstWeather = weatherArray.first ?? JSON.null
+            
+            let model = MVPWeatherModel(
+                main: firstWeather["main"].stringValue,
+                description: firstWeather["description"].stringValue,
+                icon: firstWeather["icon"].stringValue,
+                temp: json["main"]["temp"].doubleValue,
+                windSpeed: json["wind"]["speed"].doubleValue,
+                nameCity: json["name"].stringValue,
+                cod: json["cod"].intValue
+            )
+            completion(model)
+        }
     }
     
-    func getWeatherByCoordinates(lat: Double, lon: Double, completion: @escaping (Data?) -> Void) {
+    func getWeatherByCoordinates(lat: Double, lon: Double, completion: @escaping (MVPWeatherModel?) -> Void) {
         let params = "?lat=\(lat)&lon=\(lon)&lang=ru&appid=\(apiKey)&units=metric"
-        sendRequest(type: .GET, params: params, completion: completion)
+        sendRequest(type: .GET, params: params) { data in
+            guard let data = data,
+                  let json = try? JSON(data: data),
+                    json["cod"].intValue == 200 else {
+                completion(nil)
+                return
+            }
+            
+            let weatherArray = json["weather"].arrayValue
+            let firstWeather = weatherArray.first ?? JSON.null
+            
+            let model = MVPWeatherModel(
+                main: firstWeather["main"].stringValue,
+                description: firstWeather["description"].stringValue,
+                icon: firstWeather["icon"].stringValue,
+                temp: json["main"]["temp"].doubleValue,
+                windSpeed: json["wind"]["speed"].doubleValue,
+                nameCity: json["name"].stringValue,
+                cod: json["cod"].intValue
+            )
+        
+            completion(model)
+        }
     }
     
     
@@ -59,3 +104,6 @@ final class NetworkSevice: INetworkService {
     
     
 }
+
+
+
