@@ -4,6 +4,9 @@ import UIKit
 protocol IMVPCityListView: AnyObject {
     func configureUI()
     func navigationBack()
+    func reloadTableView()
+    func showLoading()
+    func hideLoading()
 }
 
 final class MVPCityListController: UIViewController, IMVPCityListView {
@@ -75,20 +78,56 @@ final class MVPCityListController: UIViewController, IMVPCityListView {
     func navigationBack() {
         navigationController?.popViewController(animated: true)
     }
+    
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+    
+    func showLoading() {
+        print("Загрузка текущего города...")
+    }
+    
+    func hideLoading() {
+        print("Город загружен!")
+    }
+    
 }
 
 extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cities.count + 1
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0: return 1
+        case 1: return 1
+        case 2: return cities.count
+        default: return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0: return "Текущий город"
+        case 1: return "Поиск"
+        case 2: return "История"
+        default: return nil
+        }
+    }
+    
+    
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CityTableViewCell.identifier, for: indexPath) as? CityTableViewCell else { return CityTableViewCell() }
         
-        if indexPath.row == cities.count {
-            cell.configure(cityName: "➕ Добавить город")
-        } else {
-            cell.configure(cityName: cities[indexPath.row])
+        switch indexPath.section {
+        case 0: cell.configure(cityName: presenter.getCurrentCityName())
+        case 1: cell.configure(cityName: "Поиск города")
+        case 2: cell.configure(cityName: cities[indexPath.row])
+        default:
+            break
         }
         return cell
     }
