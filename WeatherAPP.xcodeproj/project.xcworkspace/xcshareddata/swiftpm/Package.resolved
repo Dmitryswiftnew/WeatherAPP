@@ -1,5 +1,5 @@
 {
-  "originHash" : "ba1338069a49aeab103b849f0fd65d46b7fad4041b02f3e0ceca2530a28754ad",
+  "originHash" : "0265128b19fbf31e0cd0caa037101b8a55acdb417de05d9ee3b1a67d9a96838f",
   "pins" : [
     {
       "identity" : "snapkit",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
         "version" : "5.7.1"
+      }
+    },
+    {
+      "identity" : "svprogresshud",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SVProgressHUD/SVProgressHUD",
+      "state" : {
+        "revision" : "c33f7c775ba7feea6047a1fc3257f2e5863b44f7",
+        "version" : "2.3.1"
       }
     },
     {

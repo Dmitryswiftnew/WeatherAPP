@@ -24,7 +24,6 @@ final class LocationService: NSObject, ILocationService {
     
 }
  
-    
 extension LocationService: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
@@ -38,10 +37,9 @@ extension LocationService: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
         print("Ошибка локации \(error)")
-        locationCompletion?(37.7749, -122.4194)
         locationManager.startUpdatingLocation()
+        locationCompletion?(37.7749, -122.4194)
+        
     }
-    
-    
 }
 

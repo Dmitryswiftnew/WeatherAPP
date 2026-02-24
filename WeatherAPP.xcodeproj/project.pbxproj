@@ -25,6 +25,8 @@
 		0AA43A9F2F43849B009F7E9F /* CityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA43A9E2F43849B009F7E9F /* CityTableViewCell.swift */; };
 		0AA43AA22F48BC1A009F7E9F /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 0AA43AA12F48BC1A009F7E9F /* SwiftyJSON */; };
 		0AA43AA42F4B56C9009F7E9F /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA43AA32F4B56C9009F7E9F /* LocationService.swift */; };
+		0AA43AA62F4DB41F009F7E9F /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA43AA52F4DB41F009F7E9F /* SearchTableViewCell.swift */; };
+		0AA43AA92F4DF0A8009F7E9F /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 0AA43AA82F4DF0A8009F7E9F /* SVProgressHUD */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,7 @@
 		0AA43A9B2F43819A009F7E9F /* MVPCityListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVPCityListPresenter.swift; sourceTree = "<group>"; };
 		0AA43A9E2F43849B009F7E9F /* CityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityTableViewCell.swift; sourceTree = "<group>"; };
 		0AA43AA32F4B56C9009F7E9F /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		0AA43AA52F4DB41F009F7E9F /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AA43AA92F4DF0A8009F7E9F /* SVProgressHUD in Frameworks */,
 				0AA43AA22F48BC1A009F7E9F /* SwiftyJSON in Frameworks */,
 				0AA43A8D2F432AA9009F7E9F /* SnapKit in Frameworks */,
 			);
@@ -153,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				0AA43A9E2F43849B009F7E9F /* CityTableViewCell.swift */,
+				0AA43AA52F4DB41F009F7E9F /* SearchTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -176,6 +181,7 @@
 			packageProductDependencies = (
 				0AA43A8C2F432AA9009F7E9F /* SnapKit */,
 				0AA43AA12F48BC1A009F7E9F /* SwiftyJSON */,
+				0AA43AA82F4DF0A8009F7E9F /* SVProgressHUD */,
 			);
 			productName = WeatherAPP;
 			productReference = 0AA43A6B2F431893009F7E9F /* WeatherAPP.app */;
@@ -208,6 +214,7 @@
 			packageReferences = (
 				0AA43A8B2F432AA9009F7E9F /* XCRemoteSwiftPackageReference "SnapKit" */,
 				0AA43AA02F48BC1A009F7E9F /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				0AA43AA72F4DF0A8009F7E9F /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
 			);
 			productRefGroup = 0AA43A6C2F431893009F7E9F /* Products */;
 			projectDirPath = "";
@@ -244,6 +251,7 @@
 				0AA43AA42F4B56C9009F7E9F /* LocationService.swift in Sources */,
 				0AA43A862F431BD4009F7E9F /* MVPWeatherPresenter.swift in Sources */,
 				0AA43A712F431893009F7E9F /* SceneDelegate.swift in Sources */,
+				0AA43AA62F4DB41F009F7E9F /* SearchTableViewCell.swift in Sources */,
 				0AA43A9F2F43849B009F7E9F /* CityTableViewCell.swift in Sources */,
 				0AA43A982F438165009F7E9F /* MVPCityListAssembly.swift in Sources */,
 				0AA43A9C2F43819A009F7E9F /* MVPCityListPresenter.swift in Sources */,
@@ -487,6 +495,14 @@
 				minimumVersion = 5.0.2;
 			};
 		};
+		0AA43AA72F4DF0A8009F7E9F /* XCRemoteSwiftPackageReference "SVProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVProgressHUD/SVProgressHUD";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -499,6 +515,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0AA43AA02F48BC1A009F7E9F /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		0AA43AA82F4DF0A8009F7E9F /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0AA43AA72F4DF0A8009F7E9F /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
