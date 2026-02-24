@@ -1,21 +1,25 @@
 import Foundation
 import UIKit
+import SVProgressHUD
 
-protocol IMVPCityListView: AnyObject {
+
+protocol IMVPCityListViewController: AnyObject {
     func configureUI()
     func navigationBack()
     func reloadTableView()
     func showLoading()
     func hideLoading()
+    func setSearchSuccess(_ success: Bool)
 }
 
-final class MVPCityListController: UIViewController, IMVPCityListView {
+final class MVPCityListController: UIViewController, IMVPCityListViewController {
     
     private let presenter: IMVPCityListPresenter
     
     private lazy var tableView: UITableView = {
         let view = UITableView()
         view.register(CityTableViewCell.self, forCellReuseIdentifier: CityTableViewCell.identifier)
+        view.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
         view.dataSource = self
         view.delegate = self
         view.backgroundColor = .clear
@@ -30,7 +34,6 @@ final class MVPCityListController: UIViewController, IMVPCityListView {
         return button
     }()
     
-    private var cities: [String] = ["Минск"] // хардкодим временно
     
     init(presenter: IMVPCityListPresenter) {
         self.presenter = presenter
@@ -72,7 +75,6 @@ final class MVPCityListController: UIViewController, IMVPCityListView {
             make.left.right.bottom.equalToSuperview().inset(16)
         }
         
-        
     }
     
     func navigationBack() {
@@ -84,12 +86,20 @@ final class MVPCityListController: UIViewController, IMVPCityListView {
     }
     
     func showLoading() {
-        print("Загрузка текущего города...")
+        SVProgressHUD.show()
     }
     
     func hideLoading() {
-        print("Город загружен!")
+        SVProgressHUD.dismiss()
     }
+    
+    func setSearchSuccess(_ success: Bool) {
+        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell{
+            cell.isSuccess = success
+        }
+    }
+    
+    
     
 }
 
@@ -102,7 +112,7 @@ extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
         switch section {
         case 0: return 1
         case 1: return 1
-        case 2: return cities.count
+        case 2: return presenter.getCities().count
         default: return 0
         }
     }
@@ -120,16 +130,28 @@ extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CityTableViewCell.identifier, for: indexPath) as? CityTableViewCell else { return CityTableViewCell() }
+//        guard let cell = tableView.dequeueReusableCell(withIdentifier: CityTableViewCell.identifier, for: indexPath) as? CityTableViewCell else { return CityTableViewCell() }
         
         switch indexPath.section {
-        case 0: cell.configure(cityName: presenter.getCurrentCityName())
-        case 1: cell.configure(cityName: "Поиск города")
-        case 2: cell.configure(cityName: cities[indexPath.row])
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: CityTableViewCell.identifier, for: indexPath) as! CityTableViewCell
+            cell.configure(cityName: presenter.getCurrentCityName())
+            return cell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath)
+            as! SearchTableViewCell
+            cell.onSearch = { [weak self] cityName in
+                self?.presenter.searchCity(cityName)
+            }
+            return cell
+        case 2:
+            let cell = tableView.dequeueReusableCell(withIdentifier: CityTableViewCell.identifier, for: indexPath) as!
+            CityTableViewCell
+            cell.configure(cityName: presenter.getCities()[indexPath.row])
+            return cell
         default:
-            break
+            return UITableViewCell()
         }
-        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

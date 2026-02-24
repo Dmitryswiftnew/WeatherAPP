@@ -12,12 +12,9 @@ enum RequestType: String {
     case GET
 }
 
-
-
 final class NetworkSevice: INetworkService {
     
-    
-    
+
     private let baseURLString = "https://api.openweathermap.org/data/2.5/weather"
     private let apiKey = "464a3a6e5b45305ac50bac982fbd017a"
     
