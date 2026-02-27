@@ -1,33 +1,36 @@
 import Foundation
 
-
 protocol IMVPCityListPresenter {
     func backButtonTapped()
     func didSelectRow(at index: Int)
-    func getCurrentCityName() -> String 
+    func getCurrentCityName() -> String
     func searchCity(_ cityName: String)
     func getCities() -> [String]
+    func deleteCity(at index: Int)
 }
-
 
 final class MVPCityListPresenter: IMVPCityListPresenter {
     weak var view: IMVPCityListViewController?
     
-    
     private let locationService: ILocationService
     private let networkService: INetworkService
+    private let saveLoadManager: ISaveLoadManager
     private var currentCity: String = "Загрузка..."
     private var searchTimer: Timer?
-   
-    var cities: [String] = ["Минск"] // хардкодим временно
+    
+    var cities: [String] = [] // хардкодим временно
     private var selectedWeatherModel: MVPWeatherModel?
     
     init(locationService: ILocationService = LocationService(),
-         networkService: INetworkService = NetworkSevice()) {
+         networkService: INetworkService = NetworkSevice(),
+         saveLoadManager: ISaveLoadManager = SaveLoadManager()
+    )
+    {
         self.locationService = locationService
         self.networkService = networkService
+        self.saveLoadManager = saveLoadManager
+        cities = saveLoadManager.loadCities(for: .city)
         loadCurrentCity()
-    
     }
     
     func getCurrentCityName() -> String {
@@ -44,16 +47,16 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
         locationService.getCurrentCoordinates { [weak self] lat, lon in
             self?.networkService.getWeatherByCoordinates(lat: lat, lon: lon) { model in
                 DispatchQueue.main.async { [weak self] in
-                    self?.view?.hideLoading()
+                    guard let self else { return }
+                    self.view?.hideLoading()
                     if let model = model {
                         print("Текущий город \(model.nameCity)")
-                        self?.currentCity = model.nameCity
-                        self?.view?.reloadTableView()
+                        self.currentCity = model.nameCity
+                        self.view?.reloadTableView()
                     } else {
-                        self?.currentCity = "Ошибка"
-                        self?.view?.reloadTableView()
+                        self.view?.showErrorAlert("Ошибка", "Что-то пощло не так")
+                        self.view?.reloadTableView()
                     }
-
                 }
             }
         }
@@ -66,7 +69,6 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
         }
     }
     
-    
     private func performCitySearch(_ cityName: String) {
         guard !cityName.isEmpty else { return }
         
@@ -74,22 +76,25 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
         
         networkService.getWeatherByCity(cityName) { [weak self] model in
             DispatchQueue.main.async {
-                self?.view?.hideLoading()
+                guard let self else { return }
+                self.view?.hideLoading()
                 if let model = model {
-                    self?.view?.setSearchSuccess(true)
-                    self?.selectedWeatherModel = model
-                    self?.cities.insert(model.nameCity, at: 0)
-                    self?.view?.reloadTableView()
+                    self.view?.setSearchSuccess(true)
+                    self.selectedWeatherModel = model
+                    self.cities.insert(model.nameCity, at: 0)
+                    self.saveLoadManager.saveCities(self.cities)
+                    self.view?.reloadTableView()
                 } else {
-                    self?.view?.setSearchSuccess(false)
+                    self.view?.showErrorAlert("Ошибка", "Город не найден")
                 }
             }
         }
     }
     
-    
-    
-    
+    func deleteCity(at index: Int) {
+        cities.remove(at: index)
+        saveLoadManager.saveCities(cities)
+    }
     
     func backButtonTapped() {
         view?.navigationBack()

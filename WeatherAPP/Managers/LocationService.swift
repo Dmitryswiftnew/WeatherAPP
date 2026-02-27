@@ -2,7 +2,6 @@ import Foundation
 import CoreLocation
 import UIKit
 
-
 protocol ILocationService {
     func getCurrentCoordinates(completion: @escaping (_ lat: Double, _ lon: Double) -> Void)
 }
@@ -21,7 +20,6 @@ final class LocationService: NSObject, ILocationService {
         
         locationCompletion = completion
     }
-    
 }
  
 extension LocationService: CLLocationManagerDelegate {
@@ -39,7 +37,6 @@ extension LocationService: CLLocationManagerDelegate {
         print("Ошибка локации \(error)")
         locationManager.startUpdatingLocation()
         locationCompletion?(37.7749, -122.4194)
-        
     }
 }
 

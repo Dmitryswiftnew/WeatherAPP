@@ -1,6 +1,12 @@
 import Foundation
 import UIKit
 
+enum SearchState {
+    case normal
+    case success
+    case error
+}
+
 final class SearchTableViewCell: UITableViewCell {
     static var identifier: String { "\(Self.self)" }
     
@@ -12,11 +18,29 @@ final class SearchTableViewCell: UITableViewCell {
         return textField
     }()
     
+    private var goButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("→", for: .normal)
+        button.tintColor = .systemGreen
+        button.titleLabel?.font = .systemFont(ofSize: 16)
+        button.isHidden = true
+        return button
+    }()
+    
     var onSearch: ((String) ->Void)?
     
-    var isSuccess = false {
+    var searchState: SearchState = .normal {
         didSet {
-            searchTextField.textColor = isSuccess ? .systemGreen : .label
+            switch searchState {
+            case .normal:
+                searchTextField.textColor = .black
+            case .success:
+                searchTextField.textColor = .systemGreen
+                goButton.isHidden = searchState != .success
+            case .error:
+                searchTextField.textColor = .systemRed
+                goButton.isHidden = searchState == .error
+            }
         }
     }
     
@@ -29,28 +53,41 @@ final class SearchTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     private func configureUI() {
         contentView.addSubview(searchTextField)
         searchTextField.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(16)
         }
-        
-        
         searchTextField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+        
+        contentView.addSubview(searchTextField)
+        contentView.addSubview(goButton)
+        
+        goButton.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(20)
+            make.centerY.equalTo(searchTextField)
+            make.width.height.equalTo(30)
+        }
+        
+        
+        let goButtonAction = UIAction { _ in
+            self.goButtonTapped()
+        }
+        goButton.addAction(goButtonAction, for: .touchUpInside)
     }
     
-    
     @objc private func textChanged() {
-        isSuccess = false 
+        searchState = .normal
         onSearch?(searchTextField.text ?? "")
     }
     
+    
+    func goButtonTapped() {
+        print("Переход и показ данных")
+    }
 }
     
-    
-    
-    
+
     
 
 

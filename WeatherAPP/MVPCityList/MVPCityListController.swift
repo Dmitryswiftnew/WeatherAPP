@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import SVProgressHUD
 
-
 protocol IMVPCityListViewController: AnyObject {
     func configureUI()
     func navigationBack()
@@ -10,6 +9,7 @@ protocol IMVPCityListViewController: AnyObject {
     func showLoading()
     func hideLoading()
     func setSearchSuccess(_ success: Bool)
+    func showErrorAlert(_ title: String, _ message: String)
 }
 
 final class MVPCityListController: UIViewController, IMVPCityListViewController {
@@ -45,15 +45,12 @@ final class MVPCityListController: UIViewController, IMVPCityListViewController 
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.setHidesBackButton(true, animated: false)
         configureUI()
     }
     
-    
-   
     func configureUI() {
         view.backgroundColor = .gray
         
@@ -74,7 +71,6 @@ final class MVPCityListController: UIViewController, IMVPCityListViewController 
             make.top.equalToSuperview().offset(120)
             make.left.right.bottom.equalToSuperview().inset(16)
         }
-        
     }
     
     func navigationBack() {
@@ -93,14 +89,18 @@ final class MVPCityListController: UIViewController, IMVPCityListViewController 
         SVProgressHUD.dismiss()
     }
     
-    func setSearchSuccess(_ success: Bool) {
-        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell{
-            cell.isSuccess = success
-        }
+    func showErrorAlert(_ title: String, _ message: String) {
+        hideLoading()
+        setSearchSuccess(false)
+        showAlert(title: title, message: message)
     }
     
     
-    
+    func setSearchSuccess(_ success: Bool) {
+        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell{
+            cell.searchState = success ? .success : .error
+        }
+    }
 }
 
 extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
@@ -126,12 +126,7 @@ extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let cell = tableView.dequeueReusableCell(withIdentifier: CityTableViewCell.identifier, for: indexPath) as? CityTableViewCell else { return CityTableViewCell() }
-        
         switch indexPath.section {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: CityTableViewCell.identifier, for: indexPath) as! CityTableViewCell
@@ -154,11 +149,17 @@ extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete && indexPath.section == 2 {
+            presenter.deleteCity(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .left)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         presenter.didSelectRow(at: indexPath.row)
     }
-    
-    
+
 }
 

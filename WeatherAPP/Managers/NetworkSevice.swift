@@ -1,12 +1,10 @@
 import Foundation
 import SwiftyJSON
 
-
 protocol INetworkService {
     func getWeatherByCity(_ cityName: String, completion: @escaping (MVPWeatherModel?) -> Void)
     func getWeatherByCoordinates(lat: Double, lon: Double, completion: @escaping (MVPWeatherModel?) -> Void)
 }
-
 
 enum RequestType: String {
     case GET
@@ -14,19 +12,15 @@ enum RequestType: String {
 
 final class NetworkSevice: INetworkService {
     
-
     private let baseURLString = "https://api.openweathermap.org/data/2.5/weather"
     private let apiKey = "464a3a6e5b45305ac50bac982fbd017a"
-    
     
     func getWeatherByCity(_ cityName: String, completion: @escaping (MVPWeatherModel?) -> Void) {
         let params = "?q=\(cityName)&lang=ru&appid=\(apiKey)&units=metric"
         sendRequest(type: .GET, params: params) { data in
-            guard let data = data,
-                  let json = try? JSON(data: data),
-                  json["cod"].intValue == 200 else {
-                completion(nil)
-                return
+            guard let data,
+                  let json = try? JSON(data: data) else {
+                return completion(nil)
             }
             
             let weatherArray = json["weather"].arrayValue
@@ -48,11 +42,9 @@ final class NetworkSevice: INetworkService {
     func getWeatherByCoordinates(lat: Double, lon: Double, completion: @escaping (MVPWeatherModel?) -> Void) {
         let params = "?lat=\(lat)&lon=\(lon)&lang=ru&appid=\(apiKey)&units=metric"
         sendRequest(type: .GET, params: params) { data in
-            guard let data = data,
-                  let json = try? JSON(data: data),
-                    json["cod"].intValue == 200 else {
-                completion(nil)
-                return
+            guard let data,
+                  let json = try? JSON(data: data) else {
+                return completion(nil)
             }
             
             let weatherArray = json["weather"].arrayValue
@@ -67,11 +59,9 @@ final class NetworkSevice: INetworkService {
                 nameCity: json["name"].stringValue,
                 cod: json["cod"].intValue
             )
-        
             completion(model)
         }
     }
-    
     
     private func sendRequest(type: RequestType, params: String, completion: @escaping (Data?) -> Void) {
         guard let url = URL(string: "\(baseURLString)\(params)") else {
@@ -84,22 +74,21 @@ final class NetworkSevice: INetworkService {
         
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard error == nil else {
-                return completion(nil) // потом сюда можно повесить обработчик ошибок
+                print("Ошибка сети")
+                return completion(nil)
             }
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 200 {
                     print("Код ответа: \(httpResponse.statusCode)")
+                    completion(data)
+                    return
                 } else {
                     print("Код ответа: \(httpResponse.statusCode)")
-                    return
+                    return completion(nil)
                 }
             }
-            completion(data)
         }.resume()
-        
     }
-    
-    
 }
 
 
