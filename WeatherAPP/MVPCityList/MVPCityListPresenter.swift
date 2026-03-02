@@ -2,11 +2,11 @@ import Foundation
 
 protocol IMVPCityListPresenter {
     func backButtonTapped()
-    func didSelectRow(at index: Int)
     func getCurrentCityName() -> String
     func searchCity(_ cityName: String)
     func getCities() -> [String]
     func deleteCity(at index: Int)
+    func didSelectRow(at indexPath: IndexPath)
 }
 
 final class MVPCityListPresenter: IMVPCityListPresenter {
@@ -19,7 +19,10 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
     private var searchTimer: Timer?
     
     var cities: [String] = [] // хардкодим временно
+    private var currentWeatherModel: MVPWeatherModel?
     private var selectedWeatherModel: MVPWeatherModel?
+    private var searchWeatherModel: MVPWeatherModel?
+    
     
     init(locationService: ILocationService = LocationService(),
          networkService: INetworkService = NetworkSevice(),
@@ -52,6 +55,7 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
                     if let model = model {
                         print("Текущий город \(model.nameCity)")
                         self.currentCity = model.nameCity
+                        self.currentWeatherModel = model
                         self.view?.reloadTableView()
                     } else {
                         self.view?.showErrorAlert("Ошибка", "Что-то пощло не так")
@@ -80,9 +84,11 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
                 self.view?.hideLoading()
                 if let model = model {
                     self.view?.setSearchSuccess(true)
-                    self.selectedWeatherModel = model
-                    self.cities.insert(model.nameCity, at: 0)
-                    self.saveLoadManager.saveCities(self.cities)
+                    self.searchWeatherModel = model
+                    if !self.cities.contains(model.nameCity) {
+                        self.cities.insert(model.nameCity, at: 0)
+                        self.saveLoadManager.saveCities(self.cities)
+                    }
                     self.view?.reloadTableView()
                 } else {
                     self.view?.showErrorAlert("Ошибка", "Город не найден")
@@ -100,8 +106,31 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
         view?.navigationBack()
     }
     
-    func didSelectRow(at index: Int) {
-        print("Выбран город №\(index)")
+    func didSelectRow(at indexPath: IndexPath) {
+        let section = indexPath.section
+        switch section {
+        case 0:
+            if let model = currentWeatherModel {
+                view?.selectedCity(model)
+            }
+        case 1:
+            if let model = searchWeatherModel {
+                view?.selectedCity(model)
+            }
+        case 2:
+            let cityName = getCities()[indexPath.row]
+            self.view?.showLoading()
+            networkService.getWeatherByCity(cityName) { [weak self] model in
+                DispatchQueue.main.async { [weak self] in
+                    self?.view?.hideLoading()
+                    if let model = model {
+                        self?.searchWeatherModel = model
+                        self?.view?.selectedCity(model)
+                    }
+                }
+            }
+        default: break
+        }
     }
     
 }
