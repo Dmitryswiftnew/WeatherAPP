@@ -3,7 +3,7 @@ import UIKit
 
 
 final class MVPCityListAssembly {
-    func assembly() -> UIViewController {
+    func assembly() -> MVPCityListController {
         let locationService = LocationService()
         let networkService = NetworkSevice()
         let saveLoadManager = SaveLoadManager()

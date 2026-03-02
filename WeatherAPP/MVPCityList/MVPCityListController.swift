@@ -10,11 +10,13 @@ protocol IMVPCityListViewController: AnyObject {
     func hideLoading()
     func setSearchSuccess(_ success: Bool)
     func showErrorAlert(_ title: String, _ message: String)
+    func selectedCity(_ model: MVPWeatherModel)
 }
 
 final class MVPCityListController: UIViewController, IMVPCityListViewController {
     
     private let presenter: IMVPCityListPresenter
+    var onCitySelected: ((MVPWeatherModel) -> Void)?
     
     private lazy var tableView: UITableView = {
         let view = UITableView()
@@ -94,13 +96,17 @@ final class MVPCityListController: UIViewController, IMVPCityListViewController 
         setSearchSuccess(false)
         showAlert(title: title, message: message)
     }
-    
-    
+
     func setSearchSuccess(_ success: Bool) {
         if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell{
             cell.searchState = success ? .success : .error
         }
     }
+    
+    func selectedCity(_ model: MVPWeatherModel) {
+        onCitySelected?(model)
+    }
+    
 }
 
 extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
@@ -138,6 +144,9 @@ extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
             cell.onSearch = { [weak self] cityName in
                 self?.presenter.searchCity(cityName)
             }
+            cell.onGoButton = { [weak self] in
+                self?.presenter.didSelectRow(at: IndexPath(row: 0, section: 1))
+            }
             return cell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: CityTableViewCell.identifier, for: indexPath) as!
@@ -158,7 +167,7 @@ extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        presenter.didSelectRow(at: indexPath.row)
+        presenter.didSelectRow(at: indexPath)
     }
 
 }

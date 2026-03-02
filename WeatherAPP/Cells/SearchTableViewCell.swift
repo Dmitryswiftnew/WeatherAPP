@@ -7,6 +7,7 @@ enum SearchState {
     case error
 }
 
+
 final class SearchTableViewCell: UITableViewCell {
     static var identifier: String { "\(Self.self)" }
     
@@ -28,6 +29,7 @@ final class SearchTableViewCell: UITableViewCell {
     }()
     
     var onSearch: ((String) ->Void)?
+    var onGoButton: (() -> Void)?
     
     var searchState: SearchState = .normal {
         didSet {
@@ -83,7 +85,8 @@ final class SearchTableViewCell: UITableViewCell {
     
     
     func goButtonTapped() {
-        print("Переход и показ данных")
+        onGoButton?()
+        onSearch?(searchTextField.text ?? "")
     }
 }
     

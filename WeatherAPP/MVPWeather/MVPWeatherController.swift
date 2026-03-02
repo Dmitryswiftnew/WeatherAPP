@@ -5,26 +5,26 @@ import SnapKit
 
 protocol IMVPWeatherView: AnyObject {
     func configureUI()
-    func showCityList()
+    func showCityListAndBack()
 }
 
 final class MVPWeatherController: UIViewController, IMVPWeatherView {
     
     private let cityLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .red
+        label.text = "🌍 Ваш город"
         return label
     }()
     
     private let temperatureLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .yellow
+        label.text = "--°"
         return label
     }()
     
-    private let windowLabel: UILabel = {
+    private let windowSpeedLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .blue
+        label.text = "Ветер -- м/с"
         return label
     }()
     
@@ -37,8 +37,8 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
         }()
     
     
-    
     private let presenter: IMVPWeatherPresenter
+    var onCitySelected: ((MVPWeatherModel) -> Void)?
     
     init(presenter: IMVPWeatherPresenter) {
         self.presenter = presenter
@@ -87,8 +87,8 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
         }
         
         
-        view.addSubview(windowLabel)
-        windowLabel.snp.makeConstraints { make in
+        view.addSubview(windowSpeedLabel)
+        windowSpeedLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().inset(200)
             make.height.equalTo(50)
@@ -102,9 +102,19 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
         burgerButton.addAction(burgerAction, for: .touchUpInside)
     }
     
-    func showCityList() {
+    func showCityListAndBack() {
         let cityListVC = MVPCityListAssembly().assembly()
+        cityListVC.onCitySelected = { model in
+            self.updateWeatherLabels(model)
+            self.navigationController?.popViewController(animated: true)
+        }
         navigationController?.pushViewController(cityListVC, animated: true)
     }
-    
+
+    private func updateWeatherLabels(_ model: MVPWeatherModel) {
+        cityLabel.text = model.nameCity
+        temperatureLabel.text = "\(Int(model.temp))°"
+        windowSpeedLabel.text = "\(model.windSpeed) м/с"
+    }
+
 }

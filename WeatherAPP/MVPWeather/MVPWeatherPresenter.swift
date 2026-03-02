@@ -49,7 +49,7 @@ final class MVPWeatherPresenter: IMVPWeatherPresenter {
 
     
     func burgerButtonTapped() {
-        view?.showCityList()
+        view?.showCityListAndBack()
     }
     
 }
