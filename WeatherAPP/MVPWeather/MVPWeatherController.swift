@@ -3,12 +3,12 @@ import UIKit
 import SnapKit
 
 
-protocol IMVPWeatherView: AnyObject {
+protocol IMVPWeatherViewController: AnyObject {
     func configureUI()
     func showCityListAndBack()
 }
 
-final class MVPWeatherController: UIViewController, IMVPWeatherView {
+final class MVPWeatherController: UIViewController, IMVPWeatherViewController {
     
     private let cityLabel: UILabel = {
         let label = UILabel()
@@ -71,8 +71,6 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
 //        presenter.testNetwork() // проверка запросов с сервака
 //        presenter.testCurrentLocation() // проверкк координат 
     }
-    
-    
     
     func configureUI() {
         view.backgroundColor = .lightGray

@@ -1,9 +1,6 @@
 import Foundation
 import UIKit
 
-
-
-
 final class MVPWeatherAssembly {
     func assembly() -> UIViewController {
         let locationService = LocationService()
