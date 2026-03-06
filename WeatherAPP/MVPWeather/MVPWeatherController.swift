@@ -36,6 +36,20 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
             return button
         }()
     
+    private lazy var refreshControl: UIRefreshControl = {
+        let refresh = UIRefreshControl()
+        return refresh
+    }()
+    
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        return scrollView
+    }()
+    
+    private let containerView: UIView = {
+        let view = UIView()
+        return view
+    }()
     
     private let presenter: IMVPWeatherPresenter
     var onCitySelected: ((MVPWeatherModel) -> Void)?
@@ -58,47 +72,61 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
 //        presenter.testCurrentLocation() // проверкк координат 
     }
     
-
+    
+    
     func configureUI() {
         view.backgroundColor = .lightGray
         
-        view.addSubview(burgerButton)
-        burgerButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(50)
-            make.left.equalToSuperview().offset(16)
-            make.height.width.equalTo(60)
-
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
-        view.addSubview(cityLabel)
+        scrollView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refreshWeather), for: .valueChanged)
+        
+        let containerView = UIView()
+        scrollView.addSubview(containerView)
+        containerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalTo(scrollView)
+        }
+        
+        containerView.addSubview(burgerButton)
+        containerView.addSubview(cityLabel)
+        containerView.addSubview(temperatureLabel)
+        containerView.addSubview(windowSpeedLabel)
+        
+        burgerButton.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview().offset(16)
+            make.height.width.equalTo(60)
+        }
+        
         cityLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(160)
+            make.top.equalTo(burgerButton.snp.bottom).offset(50)
             make.height.equalTo(50)
             make.width.equalTo(200)
         }
         
-        
-        view.addSubview(temperatureLabel)
         temperatureLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.top.equalTo(cityLabel.snp.bottom).offset(40)
             make.width.height.equalTo(100)
         }
         
-        
-        view.addSubview(windowSpeedLabel)
         windowSpeedLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(200)
+            make.top.equalTo(temperatureLabel.snp.bottom).offset(40)
             make.height.equalTo(50)
             make.width.equalTo(200)
+            make.bottom.equalToSuperview().offset(-40)
         }
         
         let burgerAction = UIAction { _ in
             self.presenter.burgerButtonTapped()
         }
-        
         burgerButton.addAction(burgerAction, for: .touchUpInside)
     }
     
@@ -117,4 +145,15 @@ final class MVPWeatherController: UIViewController, IMVPWeatherView {
         windowSpeedLabel.text = "\(model.windSpeed) м/с"
     }
 
+    @objc private func refreshWeather() {
+        refreshControl.endRefreshing()
+        presenter.loadCurrentWeather { [weak self] model in
+            DispatchQueue.main.async {
+                self?.refreshControl.endRefreshing()
+                if let model = model {
+                    self?.updateWeatherLabels(model)
+                }
+            }
+        }
+    }
 }

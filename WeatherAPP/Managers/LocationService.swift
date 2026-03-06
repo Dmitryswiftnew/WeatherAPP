@@ -12,12 +12,10 @@ final class LocationService: NSObject, ILocationService {
     private var locationCompletion: ((Double, Double) -> Void)?
     
     func getCurrentCoordinates(completion: @escaping (_ lat: Double, _ lon: Double) -> Void) {
-        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
-        
         locationCompletion = completion
     }
 }
@@ -37,6 +35,7 @@ extension LocationService: CLLocationManagerDelegate {
         print("Ошибка локации \(error)")
         locationManager.startUpdatingLocation()
         locationCompletion?(37.7749, -122.4194)
+
     }
 }
 
