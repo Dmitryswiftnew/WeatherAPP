@@ -10,7 +10,7 @@ protocol IMVPWeatherPresenter {
 }
 
 final class MVPWeatherPresenter: IMVPWeatherPresenter {
-    weak var view: IMVPWeatherView?
+    weak var view: IMVPWeatherViewController?
     private let locationService: ILocationService
     private let networkService: INetworkService
     

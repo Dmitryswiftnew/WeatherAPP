@@ -15,7 +15,7 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
     private let locationService: ILocationService
     private let networkService: INetworkService
     private let saveLoadManager: ISaveLoadManager
-    private var currentCity: String = "Загрузка..."
+    private var currentCity: String = "Проблема сети..."
     private var searchTimer: Timer?
     
     var cities: [String] = [] // хардкодим временно
@@ -58,7 +58,7 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
                         self.currentWeatherModel = model
                         self.view?.reloadTableView()
                     } else {
-                        self.view?.showErrorAlert("Ошибка", "Что-то пощло не так")
+                        self.view?.showErrorAlert("Ошибка", "Что-то пошло не так")
                         self.view?.reloadTableView()
                     }
                 }
