@@ -15,10 +15,10 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
     private let locationService: ILocationService
     private let networkService: INetworkService
     private let saveLoadManager: ISaveLoadManager
-    private var currentCity: String = "Проблема сети..."
+    private var currentCity: String = NSLocalizedString("network problem current cell", comment: "Если город не найден проблема сети")
     private var searchTimer: Timer?
     
-    var cities: [String] = [] // хардкодим временно
+    var cities: [String] = []
     private var currentWeatherModel: MVPWeatherModel?
     private var selectedWeatherModel: MVPWeatherModel?
     private var searchWeatherModel: MVPWeatherModel?
@@ -53,12 +53,11 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
                     guard let self else { return }
                     self.view?.hideLoading()
                     if let model = model {
-                        print("Текущий город \(model.nameCity)")
                         self.currentCity = model.nameCity
                         self.currentWeatherModel = model
                         self.view?.reloadTableView()
                     } else {
-                        self.view?.showErrorAlert("Ошибка", "Что-то пошло не так")
+                        self.view?.showErrorAlert(NSLocalizedString("error", comment: "ошибка"), NSLocalizedString("something went wrong", comment: ""))
                         self.view?.reloadTableView()
                     }
                 }
@@ -91,7 +90,7 @@ final class MVPCityListPresenter: IMVPCityListPresenter {
                     }
                     self.view?.reloadTableView()
                 } else {
-                    self.view?.showErrorAlert("Ошибка", "Город не найден")
+                    self.view?.showErrorAlert(NSLocalizedString("error", comment: ""), NSLocalizedString("city not found", comment: ""))
                 }
             }
         }

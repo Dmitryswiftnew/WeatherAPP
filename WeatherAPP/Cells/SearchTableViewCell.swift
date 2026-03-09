@@ -7,14 +7,12 @@ enum SearchState {
     case error
 }
 
-
 final class SearchTableViewCell: UITableViewCell {
     static var identifier: String { "\(Self.self)" }
     
     private let searchTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Введите город..."
-        textField.font = .systemFont(ofSize: 18)
+        textField.placeholder = NSLocalizedString("enter city", comment: "")
         textField.borderStyle = .roundedRect
         return textField
     }()
@@ -23,7 +21,6 @@ final class SearchTableViewCell: UITableViewCell {
         let button = UIButton(type: .system)
         button.setTitle("→", for: .normal)
         button.tintColor = .systemGreen
-        button.titleLabel?.font = .systemFont(ofSize: 16)
         button.isHidden = true
         return button
     }()
@@ -58,7 +55,7 @@ final class SearchTableViewCell: UITableViewCell {
     private func configureUI() {
         contentView.addSubview(searchTextField)
         searchTextField.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(16)
+            make.edges.equalToSuperview().inset(Constants.Offsets.baseOffset)
         }
         searchTextField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         
@@ -66,9 +63,9 @@ final class SearchTableViewCell: UITableViewCell {
         contentView.addSubview(goButton)
         
         goButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(20)
+            make.right.equalToSuperview().inset(Constants.goButton.rightOffset)
             make.centerY.equalTo(searchTextField)
-            make.width.height.equalTo(30)
+            make.width.height.equalTo(Constants.goButton.heightAndWeight)
         }
         
         
@@ -82,7 +79,6 @@ final class SearchTableViewCell: UITableViewCell {
         searchState = .normal
         onSearch?(searchTextField.text ?? "")
     }
-    
     
     func goButtonTapped() {
         onGoButton?()

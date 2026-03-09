@@ -8,11 +8,9 @@ final class CityTableViewCell: UITableViewCell {
     
     private let cityNameLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .medium)
         label.textColor = .black
         return label
     }()
-    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,14 +28,12 @@ final class CityTableViewCell: UITableViewCell {
         }
     }
     
-    
     func configure(cityName: String) {
         cityNameLabel.text = cityName
     }
     
     override func prepareForReuse() {
-         super.prepareForReuse()
+        super.prepareForReuse()
         cityNameLabel.text = nil
     }
-    
 }

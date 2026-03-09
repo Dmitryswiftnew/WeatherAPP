@@ -85,7 +85,6 @@ final class MVPCityListPresenterTests: XCTestCase {
         XCTAssertEqual(sut.getCurrentCityName(), Expected.defaultCity)
     }
     
-    
     func test_saveLoadManager_SaveCities() {
         // given
         let mockSaveLoad = MockSaveLoadManager()
@@ -101,6 +100,5 @@ final class MVPCityListPresenterTests: XCTestCase {
         
         // then
         XCTAssertEqual(mockSaveLoad.savedCities, Expected.savedCitiesAfterDelete)
-    
     }
 }

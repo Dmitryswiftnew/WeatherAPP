@@ -58,9 +58,9 @@ final class MVPCityListController: UIViewController, IMVPCityListViewController 
         
         view.addSubview(backButton)
         backButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(50)
-            make.left.equalToSuperview().offset(16)
-            make.height.width.equalTo(44)
+            make.top.equalToSuperview().offset(Constants.Offsets.topOffsetMiddle)
+            make.left.equalToSuperview().offset(Constants.Offsets.baseOffset)
+            make.height.width.equalTo(Constants.SizeLabel.heightLabel)
         }
         
         let backAction = UIAction { _ in
@@ -70,8 +70,8 @@ final class MVPCityListController: UIViewController, IMVPCityListViewController 
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(120)
-            make.left.right.bottom.equalToSuperview().inset(16)
+            make.top.equalToSuperview().offset(Constants.Offsets.offsetBig)
+            make.left.right.bottom.equalToSuperview().inset(Constants.Offsets.baseOffset)
         }
     }
     
@@ -96,7 +96,7 @@ final class MVPCityListController: UIViewController, IMVPCityListViewController 
         setSearchSuccess(false)
         showAlert(title: title, message: message)
     }
-
+    
     func setSearchSuccess(_ success: Bool) {
         if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 1)) as? SearchTableViewCell{
             cell.searchState = success ? .success : .error
@@ -125,9 +125,9 @@ extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 0: return "Текущий город"
-        case 1: return "Поиск"
-        case 2: return "История"
+        case 0: return NSLocalizedString("current city cell", comment: "Текущий город")
+        case 1: return NSLocalizedString("search", comment: "Поиск по городу")
+        case 2: return NSLocalizedString("history", comment: "История ранее выбранных городов")
         default: return nil
         }
     }
@@ -169,6 +169,5 @@ extension MVPCityListController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         presenter.didSelectRow(at: indexPath)
     }
-
 }
 

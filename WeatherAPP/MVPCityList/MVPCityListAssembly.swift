@@ -1,7 +1,6 @@
 import Foundation
 import UIKit
 
-
 final class MVPCityListAssembly {
     func assembly() -> MVPCityListController {
         let locationService = LocationService()
@@ -9,7 +8,6 @@ final class MVPCityListAssembly {
         let saveLoadManager = SaveLoadManager()
         let presenter = MVPCityListPresenter(locationService: locationService, networkService: networkService, saveLoadManager: saveLoadManager)
         let controller = MVPCityListController(presenter: presenter)
-        
         
         presenter.view = controller
         
