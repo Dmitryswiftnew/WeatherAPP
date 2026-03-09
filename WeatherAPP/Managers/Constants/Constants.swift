@@ -27,7 +27,7 @@ enum Constants {
     }
     
     enum defaultCoordinatesForCurrentLocation {
-        static let currentCityLat = 37.7749
-        static let currentCityLon = -122.4194
+        static let currentCityLat = 19.25
+        static let currentCityLon = 103.727
     }
 }
