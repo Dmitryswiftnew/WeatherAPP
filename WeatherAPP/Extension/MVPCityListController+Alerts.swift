@@ -1,8 +1,6 @@
 import Foundation
 import UIKit
 
-
-
 extension MVPCityListController {
     
     func showAlert(title: String, message: String) {
@@ -11,6 +9,4 @@ extension MVPCityListController {
         alert.addAction(okAction)
         present(alert, animated: true)
     }
-    
-    
 }

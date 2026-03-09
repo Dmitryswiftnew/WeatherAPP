@@ -32,10 +32,8 @@ extension LocationService: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
-        print("Ошибка локации \(error)")
         locationManager.startUpdatingLocation()
-        locationCompletion?(37.7749, -122.4194)
-
+        locationCompletion?(Constants.defaultCoordinatesForCurrentLocation.currentCityLat, -Constants.defaultCoordinatesForCurrentLocation.currentCityLon)
     }
 }
 

@@ -32,6 +32,7 @@
 		0AA43ABD2F588EB8009F7E9F /* MockNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA43ABC2F588EB8009F7E9F /* MockNetworkService.swift */; };
 		0AA43AC02F59C03E009F7E9F /* MockSaveLoadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA43ABF2F59C03E009F7E9F /* MockSaveLoadManager.swift */; };
 		0AA43AC32F5B1259009F7E9F /* MockLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA43AC22F5B1259009F7E9F /* MockLocationService.swift */; };
+		0AA43ACB2F5EBAA0009F7E9F /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 0AA43ACA2F5EBAA0009F7E9F /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,8 @@
 		0AA43ABC2F588EB8009F7E9F /* MockNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkService.swift; sourceTree = "<group>"; };
 		0AA43ABF2F59C03E009F7E9F /* MockSaveLoadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSaveLoadManager.swift; sourceTree = "<group>"; };
 		0AA43AC22F5B1259009F7E9F /* MockLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocationService.swift; sourceTree = "<group>"; };
+		0AA43AC72F5B2630009F7E9F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		0AA43ACA2F5EBAA0009F7E9F /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +119,6 @@
 			children = (
 				0AA43A822F431A50009F7E9F /* MVPWeather */,
 				0AA43A962F4380CE009F7E9F /* MVPCityList */,
-				0AA43A912F432D3D009F7E9F /* Constants */,
 				0AA43A9D2F43847B009F7E9F /* Cells */,
 				0AA43A902F432D36009F7E9F /* Models */,
 				0AA43A8F2F432CCE009F7E9F /* Extension */,
@@ -126,6 +128,7 @@
 				0AA43A772F431895009F7E9F /* Assets.xcassets */,
 				0AA43A792F431895009F7E9F /* LaunchScreen.storyboard */,
 				0AA43A7C2F431895009F7E9F /* Info.plist */,
+				0AA43AC42F5B24AC009F7E9F /* Resources */,
 			);
 			path = WeatherAPP;
 			sourceTree = "<group>";
@@ -146,6 +149,7 @@
 				0AA43A942F436B58009F7E9F /* NetworkSevice.swift */,
 				0AA43AA32F4B56C9009F7E9F /* LocationService.swift */,
 				0AA43AAA2F4F4019009F7E9F /* SaveLoadManager.swift */,
+				0AA43A912F432D3D009F7E9F /* Constants */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -220,6 +224,14 @@
 			path = UnitTests;
 			sourceTree = "<group>";
 		};
+		0AA43AC42F5B24AC009F7E9F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0AA43ACA2F5EBAA0009F7E9F /* Localizable.xcstrings */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -289,6 +301,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 0AA43A622F431893009F7E9F;
 			packageReferences = (
@@ -313,6 +326,7 @@
 			files = (
 				0AA43A782F431895009F7E9F /* Assets.xcassets in Resources */,
 				0AA43A7B2F431895009F7E9F /* Base in Resources */,
+				0AA43ACB2F5EBAA0009F7E9F /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +389,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				0AA43A7A2F431895009F7E9F /* Base */,
+				0AA43AC72F5B2630009F7E9F /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -387,6 +402,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -450,6 +466,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
